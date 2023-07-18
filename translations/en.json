@@ -1,0 +1,21 @@
+{
+    "config": {
+        "abort": {
+            "unknown": "Unexpected error"
+        },
+        "error": {
+            "invalid_auth": "Invalid authentication"
+        },
+        "flow_title": "{name} ({host})",
+        "step": {
+            "user": {
+                "data": {
+                    "controller_ip": "Controller IP",
+                    "username": "Username",
+                    "password": "Password"
+                },
+                "description": "Set up Alpha Home."
+            }
+        }
+    }
+}
