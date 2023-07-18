@@ -1,17 +1,17 @@
 import logging
 
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+
 from .api import ControllerApi
 from .const import DOMAIN, PLATFORMS
-
-from homeassistant.core import HomeAssistant
-from homeassistant.config_entries import ConfigEntry
 
 _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Set up Alpha Home from config entry."""
-    _LOGGER.info("Setting up Alpha Home component")
+    _LOGGER.debug("Setting up Alpha Home component")
 
     controller_api = ControllerApi(entry.data['controller_ip'], entry.data['username'], entry.data['password'])
 
