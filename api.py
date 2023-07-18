@@ -1,13 +1,12 @@
 import base64
+import logging
 import urllib
+from urllib.parse import unquote
 
 import requests
-import logging
-
-from backports.pbkdf2 import pbkdf2_hmac
-from urllib.parse import unquote
-from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
+from Crypto.Hash import SHA256
+from backports.pbkdf2 import pbkdf2_hmac
 
 _LOGGER = logging.getLogger(__name__)
 

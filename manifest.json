@@ -5,7 +5,7 @@
     "documentation": "https://arjen.dev",
     "integration_type": "hub",
     "iot_class": "local_polling",
-    "requirements": ["backports.pbkdf2==0.1", "crypto==1.4.1", "pycryptodome==3.17"],
+    "requirements": ["backports.pbkdf2==0.1", "pycryptodome==3.17"],
     "version": "0.1.0",
     "config_flow": true
   }
