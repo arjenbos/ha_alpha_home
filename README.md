@@ -1,4 +1,5 @@
 # Alpha Innotec Home Assistant integration
+A custom integration which will add your thermostats to Home Assistant.
 
 ## Pre-install
 1. Create a user for Home Assistant in the control box. Do not use a user that's in use by any other application. For example, the mobile app or web app.
