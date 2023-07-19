@@ -17,8 +17,9 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
 )
 
-from .api import ControllerApi, Thermostat
-from .const import DOMAIN
+from .controller_api import ControllerAPI, Thermostat
+from .const import DOMAIN, MODULE_TYPE_SENSOR
+from .gateway_api import GatewayAPI
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -26,9 +27,10 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass, entry, async_add_entities):
     """Set up the sensor platform."""
 
-    controller_api = hass.data[DOMAIN][entry.entry_id]
+    controller_api = hass.data[DOMAIN][entry.entry_id]['controller_api']
+    gateway_api = hass.data[DOMAIN][entry.entry_id]['gateway_api']
 
-    coordinator = AlphaCoordinator(hass, controller_api)
+    coordinator = AlphaCoordinator(hass, controller_api, gateway_api)
 
     await coordinator.async_config_entry_first_refresh()
 
@@ -49,7 +51,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class AlphaCoordinator(DataUpdateCoordinator):
     """My custom coordinator."""
 
-    def __init__(self, hass, controller_api: ControllerApi):
+    def __init__(self, hass, controller_api: ControllerAPI, gateway_api: GatewayAPI):
         """Initialize my coordinator."""
         super().__init__(
             hass,
@@ -59,6 +61,7 @@ class AlphaCoordinator(DataUpdateCoordinator):
         )
 
         self.controller_api = controller_api
+        self.gateway_api = gateway_api
 
     async def _async_update_data(self):
         """Fetch data from API endpoint.
@@ -67,8 +70,44 @@ class AlphaCoordinator(DataUpdateCoordinator):
         so entities can quickly look up their data.
         """
         try:
-            thermostats = await self.hass.async_add_executor_job(self.controller_api.thermostats)
+            rooms = await self.hass.async_add_executor_job(self.gateway_api.all_modules)
+            _LOGGER.debug("Rooms: %s", rooms)
+
+            thermostats: list[Thermostat] = []
+
+            try:
+                for room_id in rooms:
+                    room_module = rooms[room_id]
+                    room = await self.hass.async_add_executor_job(self.controller_api.room_details, room_id)
+
+                    current_temperature = None
+
+                    for module_id in room_module['modules']:
+                        module_details = await self.hass.async_add_executor_job(self.gateway_api.get_module_details, module_id)
+                        if module_details is None:
+                            continue
+
+                        if module_details["type"] == MODULE_TYPE_SENSOR:
+                            current_temperature = module_details["currentTemperature"]
+
+                    thermostat = Thermostat(
+                        identifier=room_id,
+                        name=room['name'],
+                        current_temperature=current_temperature,
+                        desired_temperature=room.get('desiredTemperature'),
+                        minimum_temperature=room.get('minTemperature'),
+                        maximum_temperature=room.get('maxTemperature'),
+                        cooling=room.get('cooling'),
+                        cooling_enabled=room.get('coolingEnabled')
+                    )
+
+                    thermostats.append(thermostat)
+            except Exception as exception:
+                _LOGGER.exception("There is an exception: %s", exception)
+
             return thermostats
+
+            return []
         except Exception as exception:
             raise exception
 
@@ -82,7 +121,7 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
         ClimateEntityFeature.TARGET_TEMPERATURE
     )
 
-    def __init__(self, coordinator, api: ControllerApi, name, description, thermostat: Thermostat):
+    def __init__(self, coordinator, api: ControllerAPI, name, description, thermostat: Thermostat):
         """Pass coordinator to CoordinatorEntity."""
         super().__init__(coordinator, context=thermostat.identifier)
         self.api = api

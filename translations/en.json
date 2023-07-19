@@ -10,9 +10,12 @@
         "step": {
             "user": {
                 "data": {
+                    "gateway_ip": "Gateway IP",
+                    "gateway_username": "Gateway username",
+                    "gateway_password": "Gateway password",
                     "controller_ip": "Controller IP",
-                    "username": "Username",
-                    "password": "Password"
+                    "controller_username": "Controller username",
+                    "controller_password": "Controller password"
                 },
                 "description": "Set up Alpha Home."
             }

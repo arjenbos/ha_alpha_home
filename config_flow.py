@@ -5,24 +5,30 @@ import voluptuous as vol
 from homeassistant import config_entries, exceptions
 from homeassistant.data_entry_flow import FlowResult
 
-from . import ControllerApi
+from .controller_api import ControllerAPI
 from .const import DOMAIN
+from .gateway_api import GatewayAPI
 
 _LOGGER = logging.getLogger(__name__)
 
 DATA_SCHEMA = vol.Schema({
+    vol.Required("gateway_ip", description="Please enter the IP address of your gateway."): str,
+    vol.Required("gateway_password", description="Please enter the password of your gateway."): str,
     vol.Required("controller_ip", description="Please enter the IP address of your controller."): str,
-    vol.Required("username", description="The username for your controller."): str,
-    vol.Required("password", description="The password for your controller."): str
+    vol.Required("controller_username", description="The username for your controller."): str,
+    vol.Required("controller_password", description="The password for your controller."): str
 })
 
 
 def validate_input(data: dict):
-    controller_api = ControllerApi(data["controller_ip"], data["username"], data["password"])
+    controller_api = ControllerAPI(data["controller_ip"], data["controller_username"], data["controller_password"])
+    gateway_api = GatewayAPI(data['gateway_ip'], data['gateway_password'])
     try:
         controller_api.login()
+        gateway_api.login()
         system_information = controller_api.system_information()
-    except Exception:
+    except Exception as exception:
+        _LOGGER.info("Exception: %s", exception)
         raise CannotConnect
 
     return system_information
