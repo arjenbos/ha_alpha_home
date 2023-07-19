@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import logging
 from datetime import timedelta
+
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription, SensorDeviceClass
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import (
@@ -11,8 +12,8 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .base_coordinator import BaseCoordinator
+from .const import DOMAIN, MANUFACTURER
 from .controller_api import ControllerAPI, Thermostat
-from .const import DOMAIN, MODULE_TYPE_SENSOR, MANUFACTURER
 from .gateway_api import GatewayAPI
 
 _LOGGER = logging.getLogger(__name__)

@@ -3,8 +3,8 @@ import logging
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
-from .controller_api import ControllerAPI
 from .const import DOMAIN, PLATFORMS
+from .controller_api import ControllerAPI
 from .gateway_api import GatewayAPI
 
 _LOGGER = logging.getLogger(__name__)

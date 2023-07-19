@@ -1,9 +1,11 @@
-from .api import BaseAPI
-import requests
-import logging
 import base64
+import logging
 import urllib
 from urllib.parse import unquote
+
+import requests
+
+from .api import BaseAPI
 
 _LOGGER = logging.getLogger(__name__)
 

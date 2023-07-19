@@ -5,8 +5,8 @@ import voluptuous as vol
 from homeassistant import config_entries, exceptions
 from homeassistant.data_entry_flow import FlowResult
 
-from .controller_api import ControllerAPI
 from .const import DOMAIN
+from .controller_api import ControllerAPI
 from .gateway_api import GatewayAPI
 
 _LOGGER = logging.getLogger(__name__)

@@ -6,8 +6,8 @@ import logging
 from homeassistant.core import HomeAssistant
 
 from . import GatewayAPI
-from .controller_api import ControllerAPI
 from .const import MODULE_TYPE_SENSOR
+from .controller_api import ControllerAPI
 from .structs.Thermostat import Thermostat
 
 _LOGGER = logging.getLogger(__name__)

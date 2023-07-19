@@ -1,9 +1,6 @@
 import base64
 import logging
-import urllib
-from urllib.parse import unquote
 
-import requests
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 from backports.pbkdf2 import pbkdf2_hmac
