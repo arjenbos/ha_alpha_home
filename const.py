@@ -2,7 +2,10 @@ from homeassistant.const import Platform
 
 DOMAIN = "alpha"
 
+MANUFACTURER = "Alpha Innotec"
+
 PLATFORMS = [
+    Platform.SENSOR,
     Platform.CLIMATE,
 ]
 

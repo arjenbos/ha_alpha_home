@@ -17,8 +17,9 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
 )
 
+from .base_coordinator import BaseCoordinator
 from .controller_api import ControllerAPI, Thermostat
-from .const import DOMAIN, MODULE_TYPE_SENSOR
+from .const import DOMAIN, MODULE_TYPE_SENSOR, MANUFACTURER
 from .gateway_api import GatewayAPI
 
 _LOGGER = logging.getLogger(__name__)
@@ -48,7 +49,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities(entities)
 
 
-class AlphaCoordinator(DataUpdateCoordinator):
+class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
     """My custom coordinator."""
 
     def __init__(self, hass, controller_api: ControllerAPI, gateway_api: GatewayAPI):
@@ -69,47 +70,7 @@ class AlphaCoordinator(DataUpdateCoordinator):
         This is the place to pre-process the data to lookup tables
         so entities can quickly look up their data.
         """
-        try:
-            rooms = await self.hass.async_add_executor_job(self.gateway_api.all_modules)
-            _LOGGER.debug("Rooms: %s", rooms)
-
-            thermostats: list[Thermostat] = []
-
-            try:
-                for room_id in rooms:
-                    room_module = rooms[room_id]
-                    room = await self.hass.async_add_executor_job(self.controller_api.room_details, room_id)
-
-                    current_temperature = None
-
-                    for module_id in room_module['modules']:
-                        module_details = await self.hass.async_add_executor_job(self.gateway_api.get_module_details, module_id)
-                        if module_details is None:
-                            continue
-
-                        if module_details["type"] == MODULE_TYPE_SENSOR:
-                            current_temperature = module_details["currentTemperature"]
-
-                    thermostat = Thermostat(
-                        identifier=room_id,
-                        name=room['name'],
-                        current_temperature=current_temperature,
-                        desired_temperature=room.get('desiredTemperature'),
-                        minimum_temperature=room.get('minTemperature'),
-                        maximum_temperature=room.get('maxTemperature'),
-                        cooling=room.get('cooling'),
-                        cooling_enabled=room.get('coolingEnabled')
-                    )
-
-                    thermostats.append(thermostat)
-            except Exception as exception:
-                _LOGGER.exception("There is an exception: %s", exception)
-
-            return thermostats
-
-            return []
-        except Exception as exception:
-            raise exception
+        return await self.get_thermostats(self.hass, self.gateway_api, self.controller_api)
 
 
 class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
@@ -139,7 +100,7 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
                 (DOMAIN, self.thermostat.identifier)
             },
             name=self._attr_name,
-            manufacturer="Alpha Home",
+            manufacturer=MANUFACTURER,
         )
 
     @property
@@ -166,6 +127,7 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
         self.thermostat = current_thermostat
 
         self.async_write_ha_state()
+
 
     @property
     def current_temperature(self):

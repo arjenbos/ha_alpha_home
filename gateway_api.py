@@ -86,11 +86,10 @@ class GatewayAPI(BaseAPI):
         return response['modules']['rooms']
 
     def db_modules(self):
-        response = self.call("api/gateway/dbmodules")
-        _LOGGER.debug(response)
+        return self.call("api/gateway/dbmodules")
 
     def get_module_details(self, module_id):
-        response = self.call("api/gateway/dbmodules")
+        response = self.db_modules()
         if module_id in response['modules']:
             return response['modules'][module_id]
 
