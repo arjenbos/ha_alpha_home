@@ -10,15 +10,17 @@ from homeassistant.const import (
     ATTR_TEMPERATURE,
     UnitOfTemperature,
 )
-from homeassistant.core import callback
+from homeassistant.core import callback, HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
     DataUpdateCoordinator,
 )
 
-from .api import ControllerApi, Thermostat
-from .const import DOMAIN
+from .base_coordinator import BaseCoordinator
+from .const import DOMAIN, MANUFACTURER
+from .controller_api import ControllerAPI, Thermostat
+from .gateway_api import GatewayAPI
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -26,9 +28,10 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(hass, entry, async_add_entities):
     """Set up the sensor platform."""
 
-    controller_api = hass.data[DOMAIN][entry.entry_id]
+    controller_api = hass.data[DOMAIN][entry.entry_id]['controller_api']
+    gateway_api = hass.data[DOMAIN][entry.entry_id]['gateway_api']
 
-    coordinator = AlphaCoordinator(hass, controller_api)
+    coordinator = AlphaCoordinator(hass, controller_api, gateway_api)
 
     await coordinator.async_config_entry_first_refresh()
 
@@ -46,10 +49,10 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities(entities)
 
 
-class AlphaCoordinator(DataUpdateCoordinator):
+class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
     """My custom coordinator."""
 
-    def __init__(self, hass, controller_api: ControllerApi):
+    def __init__(self, hass: HomeAssistant, controller_api: ControllerAPI, gateway_api: GatewayAPI) -> None:
         """Initialize my coordinator."""
         super().__init__(
             hass,
@@ -58,19 +61,16 @@ class AlphaCoordinator(DataUpdateCoordinator):
             update_interval=timedelta(seconds=30),
         )
 
-        self.controller_api = controller_api
+        self.controller_api: ControllerAPI = controller_api
+        self.gateway_api: GatewayAPI = gateway_api
 
-    async def _async_update_data(self):
+    async def _async_update_data(self) -> list[Thermostat]:
         """Fetch data from API endpoint.
 
         This is the place to pre-process the data to lookup tables
         so entities can quickly look up their data.
         """
-        try:
-            thermostats = await self.hass.async_add_executor_job(self.controller_api.thermostats)
-            return thermostats
-        except Exception as exception:
-            raise exception
+        return await self.get_thermostats(self.hass, self.gateway_api, self.controller_api)
 
 
 class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
@@ -82,7 +82,7 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
         ClimateEntityFeature.TARGET_TEMPERATURE
     )
 
-    def __init__(self, coordinator, api: ControllerApi, name, description, thermostat: Thermostat):
+    def __init__(self, coordinator: AlphaCoordinator, api: ControllerAPI, name: str, description: ClimateEntityDescription, thermostat: Thermostat) -> None:
         """Pass coordinator to CoordinatorEntity."""
         super().__init__(coordinator, context=thermostat.identifier)
         self.api = api
@@ -100,7 +100,7 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
                 (DOMAIN, self.thermostat.identifier)
             },
             name=self._attr_name,
-            manufacturer="Alpha Home",
+            manufacturer=MANUFACTURER,
         )
 
     @property
@@ -128,17 +128,18 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
 
         self.async_write_ha_state()
 
+
     @property
-    def current_temperature(self):
+    def current_temperature(self) -> float:
         """Return the current temperature."""
         return self._current_temperature
 
     @property
-    def target_temperature(self):
+    def target_temperature(self) -> float:
         """Return the temperature we try to reach."""
         return self._target_temperature
 
-    async def async_set_temperature(self, **kwargs):
+    async def async_set_temperature(self, **kwargs) -> None:
         """Set new target temperature."""
         if (temp := kwargs.get(ATTR_TEMPERATURE)) is not None:
             await self.hass.async_add_executor_job(self.api.set_temperature, self.thermostat.identifier, temp)
