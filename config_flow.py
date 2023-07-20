@@ -20,18 +20,19 @@ DATA_SCHEMA = vol.Schema({
 })
 
 
-def validate_input(data: dict):
+def validate_input(data: dict) -> dict:
     controller_api = ControllerAPI(data["controller_ip"], data["controller_username"], data["controller_password"])
     gateway_api = GatewayAPI(data['gateway_ip'], data['gateway_password'])
+
     try:
         controller_api.login()
         gateway_api.login()
         system_information = controller_api.system_information()
+
+        return system_information
     except Exception as exception:
         _LOGGER.info("Exception: %s", exception)
         raise CannotConnect
-
-    return system_information
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):

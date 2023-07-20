@@ -13,7 +13,10 @@ _LOGGER = logging.getLogger(__name__)
 
 class ControllerAPI(BaseAPI):
 
-    def call(self, endpoint: str, data: dict = {}):
+    def call(self, endpoint: str, data: dict = None) -> dict:
+        if data is None:
+            data = {}
+
         _LOGGER.debug("Requesting: %s", endpoint)
         json_response = None
 
@@ -86,11 +89,13 @@ class ControllerAPI(BaseAPI):
 
         return self
 
-    def room_list(self):
+    def room_list(self) -> dict:
         return self.call("api/room/list")
 
-    def room_details(self, identifier):
-        room_list = self.room_list()
+    def room_details(self, identifier, room_list: dict = None) -> dict | None:
+        if room_list is None:
+            room_list = self.room_list()
+
         for group in room_list['groups']:
             for room in group['rooms']:
                 if room['id'] == int(identifier):
@@ -98,16 +103,16 @@ class ControllerAPI(BaseAPI):
 
         return None
 
-    def system_information(self):
+    def system_information(self) -> dict:
         return self.call('admin/systeminformation/get')
 
-    def set_temperature(self, room_identifier, temperature: float):
+    def set_temperature(self, room_identifier, temperature: float) -> dict:
         return self.call('api/room/settemperature', {
             "roomid": room_identifier,
             "temperature": temperature
         })
 
-    def thermostats(self):
+    def thermostats(self) -> list[Thermostat]:
         thermostats: list[Thermostat] = []
 
         try:

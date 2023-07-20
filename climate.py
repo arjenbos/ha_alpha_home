@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import logging
 from datetime import timedelta
+from typing import List
 
 from homeassistant.components.climate import ClimateEntity, ClimateEntityDescription, ClimateEntityFeature, HVACAction, \
     HVACMode
@@ -10,7 +11,7 @@ from homeassistant.const import (
     ATTR_TEMPERATURE,
     UnitOfTemperature,
 )
-from homeassistant.core import callback
+from homeassistant.core import callback, HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
@@ -52,7 +53,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
     """My custom coordinator."""
 
-    def __init__(self, hass, controller_api: ControllerAPI, gateway_api: GatewayAPI):
+    def __init__(self, hass: HomeAssistant, controller_api: ControllerAPI, gateway_api: GatewayAPI) -> None:
         """Initialize my coordinator."""
         super().__init__(
             hass,
@@ -61,10 +62,10 @@ class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
             update_interval=timedelta(seconds=30),
         )
 
-        self.controller_api = controller_api
-        self.gateway_api = gateway_api
+        self.controller_api: ControllerAPI = controller_api
+        self.gateway_api: GatewayAPI = gateway_api
 
-    async def _async_update_data(self):
+    async def _async_update_data(self) -> List[Thermostat]:
         """Fetch data from API endpoint.
 
         This is the place to pre-process the data to lookup tables
@@ -82,7 +83,7 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
         ClimateEntityFeature.TARGET_TEMPERATURE
     )
 
-    def __init__(self, coordinator, api: ControllerAPI, name, description, thermostat: Thermostat):
+    def __init__(self, coordinator: AlphaCoordinator, api: ControllerAPI, name: str, description: ClimateEntityDescription, thermostat: Thermostat) -> None:
         """Pass coordinator to CoordinatorEntity."""
         super().__init__(coordinator, context=thermostat.identifier)
         self.api = api
@@ -130,16 +131,16 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
 
 
     @property
-    def current_temperature(self):
+    def current_temperature(self) -> float:
         """Return the current temperature."""
         return self._current_temperature
 
     @property
-    def target_temperature(self):
+    def target_temperature(self) -> float:
         """Return the temperature we try to reach."""
         return self._target_temperature
 
-    async def async_set_temperature(self, **kwargs):
+    async def async_set_temperature(self, **kwargs) -> None:
         """Set new target temperature."""
         if (temp := kwargs.get(ATTR_TEMPERATURE)) is not None:
             await self.hass.async_add_executor_job(self.api.set_temperature, self.thermostat.identifier, temp)

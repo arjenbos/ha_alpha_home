@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from typing import List
 
 from homeassistant.core import HomeAssistant
 
@@ -14,19 +15,21 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class BaseCoordinator:
-    async def get_thermostats(self, hass: HomeAssistant, gateway_api: GatewayAPI, controller_api: ControllerAPI):
+
+    @staticmethod
+    async def get_thermostats(hass: HomeAssistant, gateway_api: GatewayAPI, controller_api: ControllerAPI) -> List[Thermostat]:
         try:
-            rooms = await hass.async_add_executor_job(gateway_api.all_modules)
-            _LOGGER.debug("Rooms: %s", rooms)
+            rooms: dict = await hass.async_add_executor_job(gateway_api.all_modules)
 
             thermostats: list[Thermostat] = []
 
-            db_modules = await hass.async_add_executor_job(gateway_api.db_modules)
+            db_modules: dict = await hass.async_add_executor_job(gateway_api.db_modules)
+            room_list: dict = await hass.async_add_executor_job(controller_api.room_list)
 
             try:
                 for room_id in rooms:
                     room_module = rooms[room_id]
-                    room = await hass.async_add_executor_job(controller_api.room_details, room_id)
+                    room = await hass.async_add_executor_job(controller_api.room_details, room_id, room_list)
 
                     current_temperature = None
                     battery_percentage = None

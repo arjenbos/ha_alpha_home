@@ -11,19 +11,21 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class GatewayAPI(BaseAPI):
-    username = "gateway"
+    username: str = "gateway"
 
-    def __init__(self, hostname, password) -> None:
+    def __init__(self, hostname: str, password: str) -> None:
         super().__init__(hostname, self.username, password)
-        self.password = password
-        self.api_host = hostname
+        self.password: str = password
+        self.api_host: str = hostname
 
-        self.request_count = 0
-        self.last_request_signature = None
-        self.udid = "homeassistant"
+        self.request_count: int = 0
+        self.last_request_signature: str | None = None
+        self.udid: str = "homeassistant"
 
+    def call(self, endpoint: str, data: dict = None) -> dict:
+        if data is None:
+            data = {}
 
-    def call(self, endpoint: str, data: dict = {}):
         _LOGGER.debug("Requesting: %s", endpoint)
         json_response = None
 
@@ -81,16 +83,16 @@ class GatewayAPI(BaseAPI):
 
         return self
 
-    def all_modules(self):
+    def all_modules(self) -> dict:
         response = self.call("api/gateway/allmodules")
         _LOGGER.debug(response)
 
         return response['modules']['rooms']
 
-    def db_modules(self):
+    def db_modules(self) -> dict:
         return self.call("api/gateway/dbmodules")
 
-    def get_module_details(self, module_id):
+    def get_module_details(self, module_id) -> dict | None:
         response = self.db_modules()
         if module_id in response['modules']:
             return response['modules'][module_id]

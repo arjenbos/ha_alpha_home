@@ -5,6 +5,7 @@ import logging
 from datetime import timedelta
 
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription, SensorDeviceClass
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
@@ -45,7 +46,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
     """My custom coordinator."""
 
-    def __init__(self, hass, controller_api: ControllerAPI, gateway_api: GatewayAPI):
+    def __init__(self, hass: HomeAssistant, controller_api: ControllerAPI, gateway_api: GatewayAPI):
         """Initialize my coordinator."""
         super().__init__(
             hass,
@@ -54,10 +55,10 @@ class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
             update_interval=timedelta(seconds=30),
         )
 
-        self.controller_api = controller_api
-        self.gateway_api = gateway_api
+        self.controller_api: ControllerAPI = controller_api
+        self.gateway_api: GatewayAPI = gateway_api
 
-    async def _async_update_data(self):
+    async def _async_update_data(self) -> list[Thermostat]:
         """Fetch data from API endpoint.
 
         This is the place to pre-process the data to lookup tables
@@ -66,14 +67,13 @@ class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
         return await self.get_thermostats(self.hass, self.gateway_api, self.controller_api)
 
 
-
 class AlphaHomeBatterySensor(CoordinatorEntity, SensorEntity):
     """Representation of a Sensor."""
 
     _attr_device_class = SensorDeviceClass.BATTERY
     _attr_native_unit_of_measurement = "%"
 
-    def __init__(self, coordinator, name, description, thermostat: Thermostat):
+    def __init__(self, coordinator: AlphaCoordinator, name: str, description: SensorEntityDescription, thermostat: Thermostat) -> None:
         """Pass coordinator to CoordinatorEntity."""
         super().__init__(coordinator, context=thermostat.identifier)
         self.entity_description = description

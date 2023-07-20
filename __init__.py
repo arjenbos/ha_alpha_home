@@ -10,7 +10,7 @@ from .gateway_api import GatewayAPI
 _LOGGER = logging.getLogger(__name__)
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> True:
     """Set up Alpha Home from config entry."""
     _LOGGER.debug("Setting up Alpha Home component")
 
