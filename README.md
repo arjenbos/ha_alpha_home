@@ -8,7 +8,7 @@ A custom integration which will add your thermostats to Home Assistant.
 3. You need to have the password for the gateway.
 
 ## Install
-1. Download the zip file from Github.
+1. Download the latest version release from Github.
 2. Upload the files into the directory `/config/custom_components`.
 3. Rename the directory to `alpha`. The files should exist in the directory `/config/custom_components/alpha`.
 4. Restart Home Assistant

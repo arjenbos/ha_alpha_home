@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import logging
 from datetime import timedelta
-from typing import List
 
 from homeassistant.components.climate import ClimateEntity, ClimateEntityDescription, ClimateEntityFeature, HVACAction, \
     HVACMode
@@ -65,7 +64,7 @@ class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
         self.controller_api: ControllerAPI = controller_api
         self.gateway_api: GatewayAPI = gateway_api
 
-    async def _async_update_data(self) -> List[Thermostat]:
+    async def _async_update_data(self) -> list[Thermostat]:
         """Fetch data from API endpoint.
 
         This is the place to pre-process the data to lookup tables

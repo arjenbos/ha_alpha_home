@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import logging
-from typing import List
 
 from homeassistant.core import HomeAssistant
 
@@ -17,7 +16,7 @@ _LOGGER = logging.getLogger(__name__)
 class BaseCoordinator:
 
     @staticmethod
-    async def get_thermostats(hass: HomeAssistant, gateway_api: GatewayAPI, controller_api: ControllerAPI) -> List[Thermostat]:
+    async def get_thermostats(hass: HomeAssistant, gateway_api: GatewayAPI, controller_api: ControllerAPI) -> list[Thermostat]:
         try:
             rooms: dict = await hass.async_add_executor_job(gateway_api.all_modules)
 
