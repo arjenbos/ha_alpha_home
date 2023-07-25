@@ -1,6 +1,6 @@
 from homeassistant.const import Platform
 
-DOMAIN = "alpha"
+DOMAIN = "alpha_innotec"
 
 MANUFACTURER = "Alpha Innotec"
 
