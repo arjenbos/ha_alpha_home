@@ -2,7 +2,7 @@
 A custom integration which will add your thermostats to Home Assistant.
 
 ## Pre-install
-1. Create a user for Home Assistant in the control box. Do not use a user that's in use by any other application. For example, the mobile app or web app.
+1. Create a user for Home Assistant in the control box. It's **not recommended** to use a shared user.
 2. Make sure Home Assistant is able to reach the control box via the local network.
 3. Make sure Home Assistant is able to reach the gateway via the local network.
 4. You need to have the password for the gateway.
