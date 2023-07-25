@@ -3,7 +3,7 @@
       "flow_title": "{name} ({host})",
       "step": {
         "user": {
-          "description": "Set up Alpha Home integration.",
+          "description": "Setup Alpha Innotec custom integration.",
           "data": {
             "controller_ip": "[%key:common::config_flow::data::controller_ip%]",
             "username": "[%key:common::config_flow::data::username%]",
