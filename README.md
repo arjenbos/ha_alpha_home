@@ -1,6 +1,6 @@
 # Alpha Innotec Home Assistant integration
-A custom integration which will add your thermostats to Home Assistant.
-
+A custom Home Assistant integration for Alpha Innotec heatpumps.
+ 
 ## Pre-install
 1. Create a user for Home Assistant in the control box. It's **not recommended** to use a shared user.
 2. Make sure Home Assistant is able to reach the control box via the local network.
