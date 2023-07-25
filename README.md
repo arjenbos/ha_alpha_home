@@ -2,9 +2,9 @@
 A custom Home Assistant integration for Alpha Innotec heat pumps.
  
 ## Pre-install
-1. Create a user for Home Assistant in the control box. It's **not recommended** to use a shared user.
-2. Make sure Home Assistant is able to reach the control box via the local network.
-3. Make sure Home Assistant is able to reach the gateway via the local network.
+1. Create a user for Home Assistant in the control box; it's **not recommended** to use a shared user.
+2. Ensure Home Assistant is able to reach the control box via the local network.
+3. Ensure Home Assistant is able to reach the gateway via the local network.
 4. You need to have the password for the gateway.
 
 ## Install
