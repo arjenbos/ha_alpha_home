@@ -1,5 +1,5 @@
 # Alpha Innotec Home Assistant integration
-A custom Home Assistant integration for Alpha Innotec heatpumps.
+A custom Home Assistant integration for Alpha Innotec heat pumps.
  
 ## Pre-install
 1. Create a user for Home Assistant in the control box. It's **not recommended** to use a shared user.
