@@ -13,4 +13,4 @@ A custom integration which will add your thermostats to Home Assistant.
 
 ## Disclaimer
 - I cannot say that i'm a python developer. So, if you see code that's bad practice. Please, feel free to contribute to this integration via a pull request. 
-- I do not own an Alpha Innotec heat pump. If you have an issue, please provide sample data and information about your installation because I can't easily test changes.
+- I do not own an Alpha Innotec heat pump. If you have an issue, please provide sample data and information about your installation because testing without sample data is impossible.
