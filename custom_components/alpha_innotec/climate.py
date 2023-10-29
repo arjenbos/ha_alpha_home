@@ -146,16 +146,6 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
             self._target_temperature = temp
 
     @property
-    def hvac_action(self) -> HVACAction | None:
-        if not self.thermostat.cooling_enabled:
-            return None
-
-        if self.thermostat.cooling:
-            return HVACAction.COOLING
-
-        return HVACAction.HEATING
-
-    @property
     def hvac_mode(self) -> HVACMode | None:
         """Return current hvac mode."""
         return HVACMode.AUTO
