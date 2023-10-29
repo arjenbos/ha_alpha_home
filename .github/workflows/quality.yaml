@@ -1,8 +1,26 @@
-name: Tests
+name: Quality
 
 on: [push]
 
 jobs:
+  pylint:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v3"
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements-dev.txt
+
+      - name: pytest
+        run: |
+          pylint $(git ls-files '*.py')
   test:
     runs-on: "ubuntu-latest"
     steps:
@@ -12,10 +30,10 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
+          cache: "pip"
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
           pip install flake8 pytest pytest-cov
           pip install -r requirements-test.txt
 
