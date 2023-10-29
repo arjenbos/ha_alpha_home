@@ -1,0 +1,222 @@
+{
+  "success": true,
+  "message": "",
+  "loginRejected": false,
+  "modules": {
+    "count": "21",
+    "rooms": {
+      "1": {
+        "name": "Room 1",
+        "minTemperature": 18,
+        "maxTemperature": 28,
+        "modules": {
+          "00020DB7C9C5804": {
+            "id": "00020DB7C9C5804",
+            "status": 0,
+            "type": "sensor",
+            "number": 0,
+            "batteryStatus": 76,
+            "moduleInstance": "0"
+          },
+          "03050DB7C9C5812": {
+            "id": "03050DB7C9C5812",
+            "status": 0,
+            "type": "floor",
+            "number": 2,
+            "batteryStatus": 127,
+            "moduleInstance": "3"
+          },
+          "04050DB7C9C5812": {
+            "id": "04050DB7C9C5812",
+            "status": 0,
+            "type": "floor",
+            "number": 3,
+            "batteryStatus": 127,
+            "moduleInstance": "4"
+          }
+        }
+      },
+      "2": {
+        "name": "Room 2",
+        "minTemperature": 18,
+        "maxTemperature": 28,
+        "modules": {
+          "00020DB7C9C5807": {
+            "id": "00020DB7C9C5807",
+            "status": 0,
+            "type": "sensor",
+            "number": 0,
+            "batteryStatus": 100,
+            "moduleInstance": "0"
+          },
+          "01050DB7C9C580A": {
+            "id": "01050DB7C9C580A",
+            "status": 0,
+            "type": "floor",
+            "number": 1,
+            "batteryStatus": 127,
+            "moduleInstance": "1"
+          },
+          "02050DB7C9C580A": {
+            "id": "02050DB7C9C580A",
+            "status": 0,
+            "type": "floor",
+            "number": 2,
+            "batteryStatus": 127,
+            "moduleInstance": "2"
+          },
+          "03050DB7C9C580A": {
+            "id": "03050DB7C9C580A",
+            "status": 0,
+            "type": "floor",
+            "number": 3,
+            "batteryStatus": 127,
+            "moduleInstance": "3"
+          },
+          "04050DB7C9C580A": {
+            "id": "04050DB7C9C580A",
+            "status": 0,
+            "type": "floor",
+            "number": 4,
+            "batteryStatus": 127,
+            "moduleInstance": "4"
+          }
+        }
+      },
+      "3": {
+        "name": "Room 3",
+        "minTemperature": 18,
+        "maxTemperature": 28,
+        "modules": {
+          "00020DB7C9C5806": {
+            "id": "00020DB7C9C5806",
+            "status": 0,
+            "type": "sensor",
+            "number": 0,
+            "batteryStatus": 66,
+            "moduleInstance": "0"
+          },
+          "01050DB7C9C580C": {
+            "id": "01050DB7C9C580C",
+            "status": 0,
+            "type": "floor",
+            "number": 1,
+            "batteryStatus": 127,
+            "moduleInstance": "1"
+          },
+          "02050DB7C9C580C": {
+            "id": "02050DB7C9C580C",
+            "status": 0,
+            "type": "floor",
+            "number": 2,
+            "batteryStatus": 127,
+            "moduleInstance": "2"
+          }
+        }
+      },
+      "4": {
+        "name": "Room 4",
+        "minTemperature": 18,
+        "maxTemperature": 28,
+        "modules": {
+          "00020DB7C9C580F": {
+            "id": "00020DB7C9C580F",
+            "status": 2,
+            "type": "sensor",
+            "number": 0,
+            "batteryStatus": 126,
+            "moduleInstance": "0"
+          },
+          "04050DB7C9C580C": {
+            "id": "04050DB7C9C580C",
+            "status": 0,
+            "type": "floor",
+            "number": 1,
+            "batteryStatus": 127,
+            "moduleInstance": "4"
+          },
+          "05050DB7C9C580C": {
+            "id": "05050DB7C9C580C",
+            "status": 0,
+            "type": "floor",
+            "number": 2,
+            "batteryStatus": 127,
+            "moduleInstance": "5"
+          }
+        }
+      },
+      "5": {
+        "name": "Room 5",
+        "minTemperature": 18,
+        "maxTemperature": 28,
+        "modules": {
+          "00020DB7C9C5805": {
+            "id": "00020DB7C9C5805",
+            "status": 0,
+            "type": "sensor",
+            "number": 0,
+            "batteryStatus": 68,
+            "moduleInstance": "0"
+          },
+          "03050DB7C9C580C": {
+            "id": "03050DB7C9C580C",
+            "status": 0,
+            "type": "floor",
+            "number": 1,
+            "batteryStatus": 127,
+            "moduleInstance": "3"
+          }
+        }
+      },
+      "6": {
+        "name": "Room 6",
+        "minTemperature": 18,
+        "maxTemperature": 28,
+        "modules": {
+          "00020DB7C9C580D": {
+            "id": "00020DB7C9C580D",
+            "status": 0,
+            "type": "sensor",
+            "number": 0,
+            "batteryStatus": 74,
+            "moduleInstance": "0"
+          },
+          "02050DB7C9C5812": {
+            "id": "02050DB7C9C5812",
+            "status": 0,
+            "type": "floor",
+            "number": 1,
+            "batteryStatus": 127,
+            "moduleInstance": "2"
+          },
+          "05050DB7C9C5812": {
+            "id": "05050DB7C9C5812",
+            "status": 0,
+            "type": "floor",
+            "number": 2,
+            "batteryStatus": 127,
+            "moduleInstance": "5"
+          },
+          "06050DB7C9C5812": {
+            "id": "06050DB7C9C5812",
+            "status": 0,
+            "type": "floor",
+            "number": 3,
+            "batteryStatus": 127,
+            "moduleInstance": "6"
+          },
+          "01050DB7C9C5812": {
+            "id": "01050DB7C9C5812",
+            "status": 0,
+            "type": "floor",
+            "number": 4,
+            "batteryStatus": 127,
+            "moduleInstance": "1"
+          }
+        }
+      }
+    }
+  },
+  "language": "en",
+  "performance": 0.75
+}
