@@ -3,11 +3,13 @@
       "flow_title": "{name} ({host})",
       "step": {
         "user": {
-          "description": "Setup Alpha Innotec custom integration.",
+          "description": "Setup Alpha Innotec.",
           "data": {
+            "gateway_ip": "[%key:common::config_flow::data::gateway_ip%]",
+            "gateway_password": "[%key:common::config_flow::data::gateway_password%]",
             "controller_ip": "[%key:common::config_flow::data::controller_ip%]",
-            "username": "[%key:common::config_flow::data::username%]",
-            "password": "[%key:common::config_flow::data::password%]"
+            "controller_username": "[%key:common::config_flow::data::controller_username%]",
+            "controller_password": "[%key:common::config_flow::data::controller_password%]"
           }
         }
       },
