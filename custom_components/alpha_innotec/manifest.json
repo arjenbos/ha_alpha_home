@@ -1,11 +1,12 @@
 {
-    "domain": "alpha_innotec",
-    "name": "Alpha Innotec custom integration",
-    "codeowners": [],
-    "documentation": "https://arjen.dev",
-    "integration_type": "hub",
-    "iot_class": "local_polling",
-    "requirements": ["backports.pbkdf2==0.1", "pycryptodome==3.17"],
-    "version": "1.0.0",
-    "config_flow": true
-  }
+  "domain": "alpha_innotec",
+  "name": "Alpha Innotec",
+  "codeowners": ["@arjenbos"],
+  "config_flow": true,
+  "documentation": "https://github.com/arjenbos/ha_alpha_innotec",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/arjenbos/ha_alpha_innotec/issues",
+  "requirements": ["backports.pbkdf2==0.1", "pycryptodome==3.17"],
+  "version": "1.1.0"
+}

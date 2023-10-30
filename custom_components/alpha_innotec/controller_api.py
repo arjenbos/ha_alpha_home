@@ -77,7 +77,11 @@ class ControllerAPI(BaseAPI):
             "hashed": base64.b64encode(self.encode_signature(self.password, device_token)).decode()
         })
 
+        if "devicetoken_encrypted" not in response.json():
+            raise Exception("Unable to login.")
+
         self.device_token_encrypted = response.json()['devicetoken_encrypted']
+
         self.user_id = response.json()['userid']
 
         self.device_token_decrypted = self.decrypt2(response.json()['devicetoken_encrypted'], self.password)
