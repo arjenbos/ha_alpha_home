@@ -6,6 +6,7 @@ MANUFACTURER = "Alpha Innotec"
 
 PLATFORMS = [
     Platform.SENSOR,
+    Platform.BINARY_SENSOR,
     Platform.CLIMATE,
 ]
 

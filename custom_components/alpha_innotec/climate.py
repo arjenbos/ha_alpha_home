@@ -121,6 +121,10 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
         if not current_thermostat:
             return
 
+        if current_thermostat == "unknown":
+            _LOGGER.warning("Current temperature not available for %s", current_thermostat.name)
+            return
+
         self._current_temperature = current_thermostat.current_temperature
         self._target_temperature = current_thermostat.desired_temperature
 
@@ -130,8 +134,12 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
 
 
     @property
-    def current_temperature(self) -> float:
+    def current_temperature(self) -> float | None:
         """Return the current temperature."""
+        if self._current_temperature == "unknown":
+            _LOGGER.warning("Current temperature not available for %s", self.thermostat.name)
+            return
+
         return self._current_temperature
 
     @property
