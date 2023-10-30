@@ -6,7 +6,7 @@ import logging
 from homeassistant.core import HomeAssistant
 
 from . import GatewayAPI
-from .const import MODULE_TYPE_SENSOR
+from .const import MODULE_TYPE_SENSOR, MODULE_TYPE_SENSE_CONTROL
 from .controller_api import ControllerAPI
 from .structs.Thermostat import Thermostat
 
@@ -40,6 +40,9 @@ class BaseCoordinator:
                         module_details = db_modules['modules'][module_id]
 
                         if module_details["type"] == MODULE_TYPE_SENSOR:
+                            current_temperature = module_details["currentTemperature"]
+                            battery_percentage = module_details["battery"]
+                        elif module_details["type"] == MODULE_TYPE_SENSE_CONTROL:
                             current_temperature = module_details["currentTemperature"]
                             battery_percentage = module_details["battery"]
 
