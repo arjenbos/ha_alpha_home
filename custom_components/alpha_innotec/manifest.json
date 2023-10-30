@@ -1,7 +1,7 @@
 {
   "domain": "alpha_innotec",
-  "name": "Alpha Innotec custom integration",
-  "codeowners": [],
+  "name": "Alpha Innotec",
+  "codeowners": ["@arjenbos"],
   "config_flow": true,
   "documentation": "https://github.com/arjenbos/ha_alpha_innotec",
   "integration_type": "hub",
