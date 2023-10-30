@@ -1,0 +1,58 @@
+name: Quality
+
+on: [push]
+
+jobs:
+#  pylint:
+#    runs-on: "ubuntu-latest"
+#    steps:
+#      - uses: "actions/checkout@v3"
+#      - name: Set up Python 3.11
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: "3.11"
+#          cache: 'pip'
+#          cache-dependency-path: |
+#            **/setup.cfg
+#            **/requirements*.txt
+#      - name: Install dependencies
+#        run: |
+#          pip install -r requirements-dev.txt
+#
+#      - name: pytest
+#        run: |
+#          pylint $(git ls-files '*.py')
+  test:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v3"
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+          cache-dependency-path: |
+            **/setup.cfg
+            **/requirements*.txt
+      - name: Install dependencies
+        run: |
+          pip install flake8 pytest pytest-cov
+          pip install -r requirements-test.txt
+
+      - name: pytest
+        run: |
+          pytest --junitxml=pytest.xml --cov-report="xml:coverage.xml" --cov=custom_components/alpha_innotec tests/
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-xml-coverage-path: ./coverage.xml
+          junitxml-path: ./pytest.xml
+          title: HA Alpha Innotec
+          badge-title: HA Alpha Innotec Coverage
+          hide-badge: false
+          hide-report: false
+          create-new-comment: false
+          hide-comment: false
+          report-only-changed-files: false
+          remove-link-from-badge: false

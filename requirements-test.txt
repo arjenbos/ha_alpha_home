@@ -1,0 +1,6 @@
+-r requirements-dev.txt
+
+aiodiscover
+pytest
+pytest-homeassistant-custom-component
+pytest-asyncio

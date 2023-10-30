@@ -1,0 +1,280 @@
+{
+  "success": true,
+  "message": "",
+  "loginRejected": false,
+  "modules": {
+    "00020DB7C9C5804": {
+      "id": 3,
+      "deviceid": "00020DB7C9C5804",
+      "nodeid": "4",
+      "name": "Room 1",
+      "room": "Room 1",
+      "currentTemperature": 21.1,
+      "battery": 76,
+      "isFailed": false,
+      "lastResponse": 1698499773000,
+      "interviewDone": true,
+      "vendorId": 380,
+      "productId": 2,
+      "type": "sensor"
+    },
+    "00020DB7C9C5805": {
+      "id": 4,
+      "deviceid": "00020DB7C9C5805",
+      "nodeid": "5",
+      "name": "Room 5",
+      "room": "Room 5",
+      "currentTemperature": 21.9,
+      "battery": 68,
+      "isFailed": false,
+      "lastResponse": 1698499513000,
+      "interviewDone": true,
+      "vendorId": 380,
+      "productId": 2,
+      "type": "sensor"
+    },
+    "00020DB7C9C5806": {
+      "id": 5,
+      "deviceid": "00020DB7C9C5806",
+      "nodeid": "6",
+      "name": "Room 3",
+      "room": "Room 3",
+      "currentTemperature": 21.9,
+      "battery": 66,
+      "isFailed": false,
+      "lastResponse": 1698496669000,
+      "interviewDone": true,
+      "vendorId": 380,
+      "productId": 2,
+      "type": "sensor"
+    },
+    "00020DB7C9C5807": {
+      "id": 6,
+      "deviceid": "00020DB7C9C5807",
+      "nodeid": "7",
+      "name": "Room 2",
+      "room": "Room 2",
+      "currentTemperature": 22.7,
+      "battery": 100,
+      "isFailed": false,
+      "lastResponse": 1698499739000,
+      "interviewDone": true,
+      "vendorId": 380,
+      "productId": 2,
+      "type": "sensor"
+    },
+    "00050DB7C9C580A": {
+      "id": 9,
+      "deviceid": "00050DB7C9C580A",
+      "nodeid": "10",
+      "name": "Verdeler 1e",
+      "room": "",
+      "currentTemperature": "off",
+      "battery": "off",
+      "binarySwitch": false,
+      "isFailed": false,
+      "lastResponse": 1698499638000,
+      "interviewDone": true,
+      "vendorId": 380,
+      "productId": 3,
+      "type": "floor",
+      "instances": [
+        {
+          "instance": "1",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "2",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "3",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "4",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "5",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "6",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "7",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "8",
+          "room": 0,
+          "status": false
+        }
+      ]
+    },
+    "00050DB7C9C580C": {
+      "id": 12,
+      "deviceid": "00050DB7C9C580C",
+      "nodeid": "12",
+      "name": "Verdeler 2e",
+      "room": "",
+      "currentTemperature": "off",
+      "battery": "off",
+      "binarySwitch": false,
+      "isFailed": false,
+      "lastResponse": 1698499592000,
+      "interviewDone": true,
+      "vendorId": 380,
+      "productId": 3,
+      "type": "floor",
+      "instances": [
+        {
+          "instance": "1",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "2",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "3",
+          "room": 0,
+          "status": true
+        },
+        {
+          "instance": "4",
+          "room": 0,
+          "status": true
+        },
+        {
+          "instance": "5",
+          "room": 0,
+          "status": true
+        },
+        {
+          "instance": "6",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "7",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "8",
+          "room": 0,
+          "status": false
+        }
+      ]
+    },
+    "00020DB7C9C580D": {
+      "id": 14,
+      "deviceid": "00020DB7C9C580D",
+      "nodeid": "13",
+      "name": "Room 6",
+      "room": "Room 6",
+      "currentTemperature": 22,
+      "battery": 74,
+      "isFailed": false,
+      "lastResponse": 1698499411000,
+      "interviewDone": true,
+      "vendorId": 380,
+      "productId": 2,
+      "type": "sensor"
+    },
+    "00020DB7C9C580F": {
+      "id": 16,
+      "deviceid": "00020DB7C9C580F",
+      "nodeid": "15",
+      "name": "Room 4",
+      "room": "Room 4",
+      "currentTemperature": "unknown",
+      "battery": "unknown",
+      "isFailed": false,
+      "lastResponse": 1698412444000,
+      "interviewDone": true,
+      "vendorId": 380,
+      "productId": 2,
+      "type": "sensor"
+    },
+    "00050DB7C9C5812": {
+      "id": 19,
+      "deviceid": "00050DB7C9C5812",
+      "nodeid": "18",
+      "name": "Verdeler BG",
+      "room": "",
+      "currentTemperature": "off",
+      "battery": "off",
+      "binarySwitch": false,
+      "isFailed": false,
+      "lastResponse": 1698499603000,
+      "interviewDone": true,
+      "vendorId": 380,
+      "productId": 3,
+      "type": "floor",
+      "instances": [
+        {
+          "instance": "1",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "2",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "3",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "4",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "5",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "6",
+          "room": 0,
+          "status": false
+        },
+        {
+          "instance": "7",
+          "room": 0,
+          "status": true
+        },
+        {
+          "instance": "8",
+          "room": 0,
+          "status": true
+        }
+      ]
+    }
+  },
+  "currentTime": 1698499793476,
+  "controllerState": "zway_controller_state_idle",
+  "reorganization": {
+    "startTime": 1698499755300,
+    "running": true,
+    "duration": 2700000
+  },
+  "language": "en",
+  "performance": 0.138
+}
