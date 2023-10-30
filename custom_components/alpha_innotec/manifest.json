@@ -3,7 +3,7 @@
   "name": "Alpha Innotec custom integration",
   "codeowners": [],
   "config_flow": true,
-  "documentation": "https://arjen.dev",
+  "documentation": "https://github.com/arjenbos/ha_alpha_innotec",
   "integration_type": "hub",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/arjenbos/ha_alpha_innotec/issues",
