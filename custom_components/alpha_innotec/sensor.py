@@ -33,6 +33,10 @@ async def async_setup_entry(hass, entry, async_add_entities):
     entities = []
 
     for thermostat in coordinator.data:
+        if thermostat.battery_percentage == "unknown":
+            _LOGGER.warning("Skipping %s because battery status is unknown.", thermostat.name)
+            continue
+
         entities.append(AlphaHomeBatterySensor(
             coordinator=coordinator,
             name=thermostat.name,

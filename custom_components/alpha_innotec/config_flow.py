@@ -31,7 +31,7 @@ def validate_input(data: dict) -> dict:
 
         return system_information
     except Exception as exception:
-        _LOGGER.info("Exception: %s", exception)
+        _LOGGER.debug("Exception: %s", exception)
         raise CannotConnect
 
 
