@@ -31,14 +31,14 @@ async def async_setup_entry(hass, entry, async_add_entities):
     controller_api = hass.data[DOMAIN][entry.entry_id]['controller_api']
     gateway_api = hass.data[DOMAIN][entry.entry_id]['gateway_api']
 
-    coordinator = AlphaCoordinator(hass, controller_api, gateway_api)
+    coordinator = AlphaInnotecClimateCoordinator(hass, controller_api, gateway_api)
 
     await coordinator.async_config_entry_first_refresh()
 
     entities = []
 
     for thermostat in coordinator.data:
-        entities.append(AlphaHomeSensor(
+        entities.append(AlphaInnotecClimateSensor(
             coordinator=coordinator,
             api=controller_api,
             name=thermostat.name,
@@ -49,7 +49,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities(entities)
 
 
-class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
+class AlphaInnotecClimateCoordinator(DataUpdateCoordinator, BaseCoordinator):
     """My custom coordinator."""
 
     def __init__(self, hass: HomeAssistant, controller_api: ControllerAPI, gateway_api: GatewayAPI) -> None:
@@ -73,7 +73,7 @@ class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
         return await self.get_thermostats(self.hass, self.gateway_api, self.controller_api)
 
 
-class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
+class AlphaInnotecClimateSensor(CoordinatorEntity, ClimateEntity):
     """Representation of a Sensor."""
 
     _attr_precision = 0.1
@@ -82,7 +82,7 @@ class AlphaHomeSensor(CoordinatorEntity, ClimateEntity):
         ClimateEntityFeature.TARGET_TEMPERATURE
     )
 
-    def __init__(self, coordinator: AlphaCoordinator, api: ControllerAPI, name: str, description: ClimateEntityDescription, thermostat: Thermostat) -> None:
+    def __init__(self, coordinator: AlphaInnotecClimateCoordinator, api: ControllerAPI, name: str, description: ClimateEntityDescription, thermostat: Thermostat) -> None:
         """Pass coordinator to CoordinatorEntity."""
         super().__init__(coordinator, context=thermostat.identifier)
         self.api = api

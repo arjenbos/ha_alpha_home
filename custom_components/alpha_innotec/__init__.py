@@ -11,8 +11,8 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> True:
-    """Set up Alpha Home from config entry."""
-    _LOGGER.debug("Setting up Alpha Home component")
+    """Set up Alpha Innotec from config entry."""
+    _LOGGER.debug("Setting up Alpha Innotec component")
 
     controller_api = ControllerAPI(entry.data['controller_ip'], entry.data['controller_username'], entry.data['controller_password'])
     controller_api = await hass.async_add_executor_job(controller_api.login)
@@ -30,7 +30,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> True:
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload Alpha Home config entry."""
+    """Unload Alpha Innotec config entry."""
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
     if unload_ok:
