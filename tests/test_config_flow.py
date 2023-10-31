@@ -1,4 +1,4 @@
-"""Test the Alpha Home config flow."""
+"""Test the Alpha Innotec config flow."""
 import json
 from unittest.mock import patch
 from homeassistant import config_entries, setup

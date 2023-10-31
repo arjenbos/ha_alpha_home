@@ -36,7 +36,7 @@ def validate_input(data: dict) -> dict:
 
 
 class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Handle a config flow for Alpha Home."""
+    """Handle a config flow for Alpha Innotec."""
 
     VERSION = 1
 
@@ -53,7 +53,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             try:
                 system_information = await self.hass.async_add_executor_job(validate_input, user_input)
 
-                return self.async_create_entry(title=system_information.get("name", "Alpha Home"), data=user_input)
+                return self.async_create_entry(title=system_information.get("name", "Alpha Innotec"), data=user_input)
             except CannotConnect:
                 errors["base"] = "cannot_connect"
             except Exception as exception:
