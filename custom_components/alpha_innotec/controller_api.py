@@ -17,7 +17,7 @@ class ControllerAPI(BaseAPI):
         if data is None:
             data = {}
 
-        _LOGGER.debug("Requesting: %s", endpoint)
+        _LOGGER.debug("[%s] - requesting", endpoint)
         json_response = None
 
         try:
@@ -40,7 +40,7 @@ class ControllerAPI(BaseAPI):
             urlencoded_body = urlencoded_body + "&" + urllib.parse.urlencode({"request_signature": request_signature},
                                                                              encoding='utf-8')
 
-            _LOGGER.debug("Encoded body: %s", urlencoded_body)
+            _LOGGER.debug("[%s] - body: %s", endpoint, urlencoded_body)
 
             response = requests.post("http://{hostname}/{endpoint}".format(hostname=self.api_host, endpoint=endpoint),
                                      data=urlencoded_body,
@@ -49,17 +49,17 @@ class ControllerAPI(BaseAPI):
 
             self.request_count = self.request_count + 1
 
-            _LOGGER.debug("Response: %s", response)
+            _LOGGER.debug("[%s] - response code: %s", endpoint, response.status_code)
             json_response = response.json()
         except Exception as exception:
             _LOGGER.exception("Unable to fetch data from API: %s", exception)
 
-        _LOGGER.debug("JSON Response: %s", json_response)
+        _LOGGER.debug("[%s] - response body: %s", endpoint, json_response)
 
         if not json_response['success']:
             raise Exception('Failed to get data')
         else:
-            _LOGGER.debug('Successfully fetched data from API')
+            _LOGGER.debug('[%s] - successfully fetched data from API', endpoint)
 
         return json_response
 
@@ -67,6 +67,8 @@ class ControllerAPI(BaseAPI):
         response = requests.post("http://" + self.api_host + "/api/user/token/challenge", data={
             "udid": self.udid
         })
+
+        _LOGGER.debug('[api/user/token/challenge] - response body: %s', response.json())
 
         device_token = response.json()['devicetoken']
 
@@ -76,6 +78,8 @@ class ControllerAPI(BaseAPI):
             "udid": self.udid,
             "hashed": base64.b64encode(self.encode_signature(self.password, device_token)).decode()
         })
+
+        _LOGGER.debug('[api/user/token/response] - response body: %s', response.json())
 
         if "devicetoken_encrypted" not in response.json():
             raise Exception("Unable to login.")

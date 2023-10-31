@@ -38,7 +38,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
         entities.append(AlphaHomeBinarySensor(
             coordinator=coordinator,
             name=valve.name,
-            description=BinarySensorEntityDescription(""),
+            description=BinarySensorEntityDescription("", entity_registry_enabled_default=valve.used),
             valve=valve
         ))
 
@@ -47,6 +47,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
 class AlphaInnotecBinarySensorCoordinator(DataUpdateCoordinator):
     """My custom coordinator."""
+
+    data: list[Valve]
 
     def __init__(self, hass: HomeAssistant, gateway_api: GatewayAPI):
         """Initialize my coordinator."""
@@ -63,6 +65,7 @@ class AlphaInnotecBinarySensorCoordinator(DataUpdateCoordinator):
         """Fetch data from API endpoint."""
 
         db_modules: dict = await self.hass.async_add_executor_job(self.gateway_api.db_modules)
+        all_modules: dict = await self.hass.async_add_executor_job(self.gateway_api.all_modules)
 
         valves: list[Valve] = []
 
@@ -73,13 +76,22 @@ class AlphaInnotecBinarySensorCoordinator(DataUpdateCoordinator):
                 continue
 
             for instance in module["instances"]:
+                valve_id = '0' + instance['instance'] + module['deviceid'][2:]
+
+                used = False
+
+                for room_id in all_modules:
+                    if used is not True:
+                        used = valve_id in all_modules[room_id]["modules"]
+
                 valve = Valve(
-                    identifier=module["deviceid"] + '-' + instance['instance'],
+                    identifier=valve_id,
                     name=module["name"] + '-' + instance['instance'],
                     instance=instance["instance"],
                     device_id=module["deviceid"],
                     device_name=module["name"],
-                    status=instance["status"]
+                    status=instance["status"],
+                    used=used
                 )
 
                 valves.append(valve)

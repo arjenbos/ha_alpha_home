@@ -26,7 +26,7 @@ class GatewayAPI(BaseAPI):
         if data is None:
             data = {}
 
-        _LOGGER.debug("Requesting: %s", endpoint)
+        _LOGGER.debug("[%s] - requesting", endpoint)
         json_response = None
 
         try:
@@ -49,7 +49,7 @@ class GatewayAPI(BaseAPI):
             urlencoded_body = urlencoded_body + "&" + urllib.parse.urlencode({"request_signature": request_signature},
                                                                              encoding='utf-8')
 
-            _LOGGER.debug("Encoded body: %s", urlencoded_body)
+            _LOGGER.debug("[%s] - body: %s", endpoint, urlencoded_body)
 
             response = requests.post("http://{hostname}/{endpoint}".format(hostname=self.api_host, endpoint=endpoint),
                                      data=urlencoded_body,
@@ -58,25 +58,23 @@ class GatewayAPI(BaseAPI):
 
             self.request_count = self.request_count + 1
 
-            _LOGGER.debug("Response: %s", response)
+            _LOGGER.debug("[%s] - response code: %s", endpoint, response.status_code)
 
             json_response = response.json()
         except Exception as exception:
             _LOGGER.exception("Unable to fetch data from API: %s", exception)
 
-        _LOGGER.debug("JSON Response: %s", json_response)
+        _LOGGER.debug("[%s] - response body: %s", endpoint, json_response)
 
         if not json_response['success']:
             raise Exception('Failed to get data')
         else:
-            _LOGGER.debug('Successfully fetched data from API')
+            _LOGGER.debug('[%s] - successfully fetched data from API', endpoint)
 
         return json_response
 
     def login(self):
         response = self.call("admin/login/check")
-
-        _LOGGER.debug("Login check response: %s", response)
 
         if not response['success']:
             raise Exception("Unable to login")
@@ -85,7 +83,6 @@ class GatewayAPI(BaseAPI):
 
     def all_modules(self) -> dict:
         response = self.call("api/gateway/allmodules")
-        _LOGGER.debug(response)
 
         return response['modules']['rooms']
 
