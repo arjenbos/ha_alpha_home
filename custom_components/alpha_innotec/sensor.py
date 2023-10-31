@@ -5,7 +5,7 @@ import logging
 from datetime import timedelta
 
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription, SensorDeviceClass
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
@@ -26,7 +26,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     controller_api = hass.data[DOMAIN][entry.entry_id]['controller_api']
     gateway_api = hass.data[DOMAIN][entry.entry_id]['gateway_api']
 
-    coordinator = AlphaCoordinator(hass, controller_api, gateway_api)
+    coordinator = AlphaInnotecSensorCoordinator(hass, controller_api, gateway_api)
 
     await coordinator.async_config_entry_first_refresh()
 
@@ -37,7 +37,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
             _LOGGER.warning("Skipping %s because battery status is unknown.", thermostat.name)
             continue
 
-        entities.append(AlphaHomeBatterySensor(
+        entities.append(AlphaInnotecBatterySensor(
             coordinator=coordinator,
             name=thermostat.name,
             description=SensorEntityDescription(""),
@@ -47,7 +47,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities(entities)
 
 
-class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
+class AlphaInnotecSensorCoordinator(DataUpdateCoordinator, BaseCoordinator):
     """My custom coordinator."""
 
     def __init__(self, hass: HomeAssistant, controller_api: ControllerAPI, gateway_api: GatewayAPI):
@@ -71,13 +71,13 @@ class AlphaCoordinator(DataUpdateCoordinator, BaseCoordinator):
         return await self.get_thermostats(self.hass, self.gateway_api, self.controller_api)
 
 
-class AlphaHomeBatterySensor(CoordinatorEntity, SensorEntity):
+class AlphaInnotecBatterySensor(CoordinatorEntity, SensorEntity):
     """Representation of a Sensor."""
 
     _attr_device_class = SensorDeviceClass.BATTERY
     _attr_native_unit_of_measurement = "%"
 
-    def __init__(self, coordinator: AlphaCoordinator, name: str, description: SensorEntityDescription, thermostat: Thermostat) -> None:
+    def __init__(self, coordinator: AlphaInnotecSensorCoordinator, name: str, description: SensorEntityDescription, thermostat: Thermostat) -> None:
         """Pass coordinator to CoordinatorEntity."""
         super().__init__(coordinator, context=thermostat.identifier)
         self.entity_description = description
@@ -100,3 +100,15 @@ class AlphaHomeBatterySensor(CoordinatorEntity, SensorEntity):
     def unique_id(self) -> str:
         """Return unique ID for this device."""
         return self.thermostat.identifier
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        for thermostat in self.coordinator.data:
+            if thermostat.identifier == self.thermostat.identifier:
+                self.thermostat = thermostat
+                break
+
+        _LOGGER.debug("Updating sensor: %s", self.thermostat.identifier)
+
+        self._attr_native_value = self.thermostat.battery_percentage
+        self.async_write_ha_state()
