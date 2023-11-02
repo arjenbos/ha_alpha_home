@@ -2,3 +2,4 @@ backports.pbkdf2==0.1
 pycryptodome==3.17
 homeassistant==2023.9.0
 pylint
+isort
