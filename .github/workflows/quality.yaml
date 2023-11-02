@@ -40,7 +40,7 @@ jobs:
 
       - name: run
         run: |
-          isort custom_components/alpha_innotec --check-only
+          isort custom_components/alpha_innotec tests --check-only
 
   test:
     runs-on: "ubuntu-latest"

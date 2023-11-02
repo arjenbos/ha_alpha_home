@@ -1,4 +1,5 @@
 from custom_components.alpha_innotec.api import BaseAPI
+
 from . import VALID_CONFIG
 
 
