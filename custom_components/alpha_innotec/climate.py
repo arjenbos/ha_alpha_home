@@ -93,12 +93,12 @@ class AlphaInnotecClimateSensor(CoordinatorEntity, ClimateEntity):
     @property
     def current_temperature(self) -> float | None:
         """Return the current temperature."""
-        return self.thermostat.current_temperature if isinstance(self.thermostat.current_temperature, float) else None
+        return self.thermostat.current_temperature if isinstance(self.thermostat.current_temperature, (float, int)) else None
 
     @property
     def target_temperature(self) -> float:
         """Return the temperature we try to reach."""
-        return self.thermostat.desired_temperature if isinstance(self.thermostat.desired_temperature, float) else None
+        return self.thermostat.desired_temperature if isinstance(self.thermostat.desired_temperature, (float, int)) else None
 
     async def async_set_temperature(self, **kwargs) -> None:
         """Set new target temperature."""

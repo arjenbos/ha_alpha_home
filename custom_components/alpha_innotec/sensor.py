@@ -76,7 +76,7 @@ class AlphaInnotecBatterySensor(CoordinatorEntity, SensorEntity):
 
     @property
     def native_value(self):
-        return self.thermostat.battery_percentage if self.thermostat.battery_percentage != "unknown" else None
+        return self.thermostat.battery_percentage if isinstance(self.thermostat.battery_percentage, (float, int)) else None
 
     @callback
     def _handle_coordinator_update(self) -> None:
