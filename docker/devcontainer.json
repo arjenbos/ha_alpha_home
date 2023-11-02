@@ -1,7 +1,0 @@
-{
-    "name": "Alpha Innotec",
-    "dockerComposeFile": "docker-compose.yml",
-    "service": "alpha-innotec",
-    "shutdownAction": "stopCompose"
-  }
-  
