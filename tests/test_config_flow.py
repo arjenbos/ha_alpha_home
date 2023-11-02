@@ -1,12 +1,13 @@
 """Test the Alpha Innotec config flow."""
 import json
 from unittest.mock import patch
+
 from homeassistant import config_entries, setup
 from homeassistant.core import HomeAssistant
-
-from custom_components.alpha_innotec.const import DOMAIN
 from homeassistant.data_entry_flow import FlowResultType
 from pytest_homeassistant_custom_component.common import load_fixture
+
+from custom_components.alpha_innotec.const import DOMAIN
 
 from . import MODULE, VALID_CONFIG
 
