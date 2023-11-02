@@ -1,9 +1,9 @@
 import base64
 import logging
 
+from backports.pbkdf2 import pbkdf2_hmac
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
-from backports.pbkdf2 import pbkdf2_hmac
 
 _LOGGER = logging.getLogger(__name__)
 

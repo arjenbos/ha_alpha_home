@@ -1,14 +1,12 @@
 import logging
-
 from datetime import timedelta
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from . import GatewayAPI
-from . import ControllerAPI
-from .const import MODULE_TYPE_SENSOR, DOMAIN
+from . import ControllerAPI, GatewayAPI
+from .const import DOMAIN, MODULE_TYPE_SENSOR
 from .structs.Thermostat import Thermostat
 from .structs.Valve import Valve
 

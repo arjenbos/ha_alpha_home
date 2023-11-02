@@ -4,16 +4,14 @@ from __future__ import annotations
 import logging
 from datetime import timedelta
 
-from homeassistant.components.binary_sensor import BinarySensorEntity, BinarySensorEntityDescription, \
-    BinarySensorDeviceClass
+from homeassistant.components.binary_sensor import (
+    BinarySensorDeviceClass, BinarySensorEntity, BinarySensorEntityDescription)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.typing import UndefinedType
-from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
-    DataUpdateCoordinator,
-)
+from homeassistant.helpers.update_coordinator import (CoordinatorEntity,
+                                                      DataUpdateCoordinator)
 
 from .const import DOMAIN, MANUFACTURER
 from .coordinator import AlphaInnotecCoordinator

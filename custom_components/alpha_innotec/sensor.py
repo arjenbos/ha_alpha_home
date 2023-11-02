@@ -2,10 +2,11 @@
 from __future__ import annotations
 
 import logging
-from datetime import timedelta, date, datetime
+from datetime import date, datetime, timedelta
 from decimal import Decimal
 
-from homeassistant.components.sensor import SensorEntity, SensorEntityDescription, SensorDeviceClass
+from homeassistant.components.sensor import (SensorDeviceClass, SensorEntity,
+                                             SensorEntityDescription)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import DeviceInfo
