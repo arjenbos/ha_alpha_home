@@ -6,6 +6,7 @@ from datetime import timedelta
 
 from homeassistant.components.binary_sensor import BinarySensorEntity, BinarySensorEntityDescription, \
     BinarySensorDeviceClass
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.typing import UndefinedType
@@ -15,29 +16,27 @@ from homeassistant.helpers.update_coordinator import (
 )
 
 from .const import DOMAIN, MANUFACTURER
+from .coordinator import AlphaInnotecCoordinator
 from .gateway_api import GatewayAPI
 from .structs.Valve import Valve
 
 _LOGGER = logging.getLogger(__name__)
 
 
-async def async_setup_entry(hass, entry, async_add_entities):
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry, async_add_entities):
     """Set up the sensor platform."""
 
     _LOGGER.debug("Setting up binary sensors")
 
-    gateway_api = hass.data[DOMAIN][entry.entry_id]['gateway_api']
-
-    coordinator = AlphaInnotecBinarySensorCoordinator(hass, gateway_api)
+    coordinator = AlphaInnotecCoordinator(hass)
 
     await coordinator.async_config_entry_first_refresh()
 
     entities = []
 
-    for valve in coordinator.data:
+    for valve in coordinator.data['valves']:
         entities.append(AlphaHomeBinarySensor(
             coordinator=coordinator,
-            name=valve.name,
             description=BinarySensorEntityDescription("", entity_registry_enabled_default=valve.used),
             valve=valve
         ))
@@ -45,72 +44,14 @@ async def async_setup_entry(hass, entry, async_add_entities):
     async_add_entities(entities)
 
 
-class AlphaInnotecBinarySensorCoordinator(DataUpdateCoordinator):
-    """My custom coordinator."""
-
-    data: list[Valve]
-
-    def __init__(self, hass: HomeAssistant, gateway_api: GatewayAPI):
-        """Initialize my coordinator."""
-        super().__init__(
-            hass,
-            _LOGGER,
-            name="Alpha Innotec Binary Coordinator",
-            update_interval=timedelta(seconds=30),
-        )
-
-        self.gateway_api: GatewayAPI = gateway_api
-
-    async def _async_update_data(self) -> list[Valve]:
-        """Fetch data from API endpoint."""
-
-        db_modules: dict = await self.hass.async_add_executor_job(self.gateway_api.db_modules)
-        all_modules: dict = await self.hass.async_add_executor_job(self.gateway_api.all_modules)
-
-        valves: list[Valve] = []
-
-        for module_id in db_modules["modules"]:
-            module = db_modules["modules"][module_id]
-
-            if module["productId"] != 3:
-                continue
-
-            for instance in module["instances"]:
-                valve_id = '0' + instance['instance'] + module['deviceid'][2:]
-
-                used = False
-
-                for room_id in all_modules:
-                    if used is not True:
-                        used = valve_id in all_modules[room_id]["modules"]
-
-                valve = Valve(
-                    identifier=valve_id,
-                    name=module["name"] + '-' + instance['instance'],
-                    instance=instance["instance"],
-                    device_id=module["deviceid"],
-                    device_name=module["name"],
-                    status=instance["status"],
-                    used=used
-                )
-
-                valves.append(valve)
-
-        _LOGGER.debug("Finished getting valves from API")
-
-        return valves
-
-
 class AlphaHomeBinarySensor(CoordinatorEntity, BinarySensorEntity):
     """Representation of a Binary Sensor."""
 
-    def __init__(self, coordinator: AlphaInnotecBinarySensorCoordinator, name: str, description: BinarySensorEntityDescription, valve: Valve) -> None:
+    def __init__(self, coordinator: AlphaInnotecCoordinator, description: BinarySensorEntityDescription, valve: Valve) -> None:
         """Pass coordinator to CoordinatorEntity."""
         super().__init__(coordinator, context=valve.identifier)
         self.entity_description = description
-        self._attr_name = name
         self.valve = valve
-        self._attr_is_on = valve.status
 
     @property
     def device_info(self) -> DeviceInfo:
@@ -125,7 +66,7 @@ class AlphaHomeBinarySensor(CoordinatorEntity, BinarySensorEntity):
 
     @property
     def name(self) -> str | UndefinedType | None:
-        return self._attr_name
+        return self.valve.name
 
     @property
     def unique_id(self) -> str:
@@ -142,10 +83,11 @@ class AlphaHomeBinarySensor(CoordinatorEntity, BinarySensorEntity):
 
     @callback
     def _handle_coordinator_update(self) -> None:
-        for valve in self.coordinator.data:
+        for valve in self.coordinator.data['valves']:
             if valve.identifier == self.valve.identifier:
                 self.valve = valve
                 break
 
         _LOGGER.debug("Updating binary sensor: %s", self.valve.identifier)
+
         self.async_write_ha_state()
