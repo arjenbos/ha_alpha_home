@@ -22,7 +22,7 @@ async def test_setup_config(hass: HomeAssistant):
 
     with patch(
         target=f"{MODULE}.config_flow.validate_input",
-        return_value=json.loads(load_fixture("controller_api_systeminformation.json")),
+        return_value=json.loads(load_fixture("controller_admin_systeminformation_get.json")),
     ) as mock_setup_entry:
         result = await hass.config_entries.flow.async_configure(
             result["flow_id"],
