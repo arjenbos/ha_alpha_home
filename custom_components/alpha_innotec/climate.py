@@ -52,6 +52,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class AlphaInnotecClimateCoordinator(DataUpdateCoordinator, BaseCoordinator):
     """My custom coordinator."""
 
+    data: list[Thermostat]
+
     def __init__(self, hass: HomeAssistant, controller_api: ControllerAPI, gateway_api: GatewayAPI) -> None:
         """Initialize my coordinator."""
         super().__init__(
