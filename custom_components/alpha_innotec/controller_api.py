@@ -42,7 +42,7 @@ class ControllerAPI(BaseAPI):
 
             _LOGGER.debug("[%s] - body: %s", endpoint, urlencoded_body)
 
-            response = requests.post("http://{hostname}/{endpoint}".format(hostname=self.api_host, endpoint=endpoint),
+            response = self.session.post("http://{hostname}/{endpoint}".format(hostname=self.api_host, endpoint=endpoint),
                                      data=urlencoded_body,
                                      headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
                                      )
@@ -64,7 +64,7 @@ class ControllerAPI(BaseAPI):
         return json_response
 
     def login(self):
-        response = requests.post("http://" + self.api_host + "/api/user/token/challenge", data={
+        response = self.session.post("http://" + self.api_host + "/api/user/token/challenge", data={
             "udid": self.udid
         })
 
@@ -72,7 +72,7 @@ class ControllerAPI(BaseAPI):
 
         device_token = response.json()['devicetoken']
 
-        response = requests.post("http://" + self.api_host + "/api/user/token/response", data={
+        response = self.session.post("http://" + self.api_host + "/api/user/token/response", data={
             "login": self.username,
             "token": device_token,
             "udid": self.udid,

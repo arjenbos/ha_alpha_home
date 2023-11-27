@@ -51,7 +51,7 @@ class GatewayAPI(BaseAPI):
 
             _LOGGER.debug("[%s] - body: %s", endpoint, urlencoded_body)
 
-            response = requests.post("http://{hostname}/{endpoint}".format(hostname=self.api_host, endpoint=endpoint),
+            response = self.session.post("http://{hostname}/{endpoint}".format(hostname=self.api_host, endpoint=endpoint),
                                      data=urlencoded_body,
                                      headers={'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
                                      )
