@@ -1,0 +1,24 @@
+{
+    "config": {
+        "abort": {
+            "unknown": "Unbekannter Fehler"
+        },
+        "error": {
+            "invalid_auth": "Falsche Authentifizierung"
+        },
+        "flow_title": "{name} ({host})",
+        "step": {
+            "user": {
+                "data": {
+                    "gateway_ip": "Gateway IP",
+                    "gateway_username": "Gateway Benutzername",
+                    "gateway_password": "Gateway Passwort",
+                    "controller_ip": "Controller IP",
+                    "controller_username": "Controller Benutzername",
+                    "controller_password": "Controller Passwort"
+                },
+                "description": "Alpha Innotec Einrichtigung."
+            }
+        }
+    }
+}
