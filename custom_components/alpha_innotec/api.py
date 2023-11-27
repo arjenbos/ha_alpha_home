@@ -1,9 +1,12 @@
 import base64
 import logging
 
+import requests
 from backports.pbkdf2 import pbkdf2_hmac
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
+from requests.adapters import HTTPAdapter
+from urllib3 import Retry
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,6 +24,17 @@ class BaseAPI:
         self.request_count: int = 0
         self.last_request_signature: str | None = None
         self.udid: str = "homeassistant"
+
+        self.session = requests.Session()
+        self.session.mount(
+            prefix='http://',
+            adapter=HTTPAdapter(
+                max_retries=Retry(
+                    total=5,
+                    backoff_factor=3
+                )
+            )
+        )
 
     @staticmethod
     def string_to_charcodes(data: str) -> str:
