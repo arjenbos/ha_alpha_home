@@ -1,9 +1,9 @@
-# Alpha Innotec Home Assistant integration
+# Home Assistant integration for the Alpha Home system
 
 ![Version](https://img.shields.io/github/v/release/arjenbos/ha_alpha_innotec)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 
-A custom Home Assistant integration for Alpha Innotec heat pumps.
+A custom Home Assistant integration for the Alpha Home intelligent room temperature system. This is **not** an integration to control your Alpha Innotec heatpump, use a luxtronic integration for that (e.g. https://github.com/BenPru/luxtronik). With this integration you can read the room temperatures, set the temperatures and see the status of the floor heating valves in your Alpha Home system.
  
 ## Pre-install
 1. Create a user for Home Assistant in the control box; it's **not recommended** to use a shared user.
